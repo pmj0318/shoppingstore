@@ -36,7 +36,7 @@
 <script>
     //window.onload==$.
     window.onload=function(){
-
+//你
 
         $.ajax({
             url:"selectAllProductsByP_type",
