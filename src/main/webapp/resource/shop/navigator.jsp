@@ -322,7 +322,7 @@ src="<%=basePath%>resource/shop/showProducts.jsp?p_type="手机"--%>
            $("#myframe").hide(1000);//就是1秒之后隐藏,没那么突兀
            $("#topImg").hide();
        })
-//及就就是就死撒
+//及就就是就死撒VR
 
     });
 
