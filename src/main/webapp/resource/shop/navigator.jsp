@@ -272,10 +272,11 @@
 </div>
 
 <%--就是一个页面就是引入另外一个页面,执行啊就是怎么是就是动态包含,使用的是inclide标签,..然后哪个会有使用方便,
-就是引入ifram就可以帮我们引入移入另个一个页面,--%>
-<iframe src="<%=basePath%>resource/shop/showProducts.jsp" id="myframe"></iframe>
+就是引入ifram就可以帮我们引入移入另个一个页面,
+src="<%=basePath%>resource/shop/showProducts.jsp?p_type="手机"--%>
+<iframe  id="myframe"></iframe>
 <img src="<%=basePath%>resource/images/top.png" id="topImg">
-
+<%--这里原来有个拼接引入,就是自因为想要给页面差传参数,之后用到地址栏的拼接,品尚你想要的数据--%>
 
 <script>
 
@@ -307,10 +308,14 @@
         //这个点击事件就是为了点击那个就确定是哪个标签那然后就是获取他下面的所有导航栏的信息
        $(".pieces").on("click",".future_ui__piece",function () {
        // alert($(this).children().children().children().text());//显示就是文本内容,嵌套.就是也能获取.会有包所以在网页上追加text(),会选择在前面children
+           var type=$(this).children().children().children().text();
 
            $(".intro").hide();//就是这个整个主页面的会隐藏,就是显示商品那页
            $("#myframe").show();
            $("#topImg").show();
+
+           //就是多参数传递值,就是不能把页面的值写死,就是需要动态的获取,就是拼接在参数在地址栏里面
+           $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);
        });
        $("#topImg").click(function () {
            $(".intro").show();

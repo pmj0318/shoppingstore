@@ -18,21 +18,14 @@
     <title>Title</title>
         <meta charset="UTF-8">
         <title>sHover|感应鼠标进出方向悬浮效果</title>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <link rel="stylesheet" href="<%=basePath%>resource/css/example.css">
         <script src="<%=basePath%>resource/js/sHover.min.js"></script>
 </head>
 <body id="body">
 <div id="part3" class="part">
     <div class="container">
-        <div id="item1" class="sHoverItem">
-            <img id="img1" src="resource/images/1.jpg">
-            <span id="intro1" class="sIntro">
-					<h2>Flowers</h2><%--就是价格A标签--%>
-					<p>Flowers are so inconsistent! But I was too young to know how to love her</p>
-					<button>加入购物车</button>
-                   <button>立即购买</button>
-				</span>
-        </div>
+
 
     </div><!-- /container -->
 
@@ -44,6 +37,35 @@
     //window.onload==$.
     window.onload=function(){
 
+
+        $.ajax({
+            url:"selectAllProductsByP_type",
+            type:"post",
+            data:{
+                "p_type":getQueryString("p_type")
+
+            },
+            success:function (data) {
+               // alert(data);
+            //console.log(data);//就是在控制台打印信息(就是所有的获取的信息)..
+                for(var i=0;i<data.length;i++){
+                    var str = " <div id='item1'  class='sHoverItem'>" +
+                        "<img id='img1' src='<%=basePath%>resource/images/1.jpg'>" +
+                        "<span id='introl' class='sIntro'>" +
+                        "<h2>"+data[i].pName+"</h2>" +
+                        "<p>"+data[i].intro+"</p>" +
+                        "<p>$"+data[i].price+"</p>" +
+                        "<button>立即购买<tton>" +
+                        "<button>加入购物车<tton>" +
+                        "</span>" +
+                        "</div>"
+
+
+                    $(".container").append(str);
+                }
+            }
+
+        })
 
         var b=new sHover('head','headIntro');
 
@@ -93,6 +115,16 @@
             return document.body.clientHeight;
         }
     }
+
+    //就是地址栏获取里一个页面传过来的参数,就是个格式固定的,只需要改一下响应的参数就可以了
+    function getQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)
+            return  decodeURI(r[2]);
+        return null;
+    }
+
 </script>
 
 

@@ -5,6 +5,9 @@ import entity.Productinfo;
 import java.util.List;
 
 public interface ProductInfoService {
+
+
+    List<Productinfo> selectAllProductsByP_type(String p_type);
     //操作是商品就到这张表,//数组不好转,list
     //<>泛型,你要的就是p_type,可以是String.是对象
 

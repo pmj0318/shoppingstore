@@ -17,10 +17,17 @@
   <sql id="Base_Column_List" >
     P_ID, P_CODE, P_NAME, P_TYPE, BRAND, PIC, P_NUM, PRICE, SALE, INTRO, STATUS
   </sql>
+
+
   <!--resultType就是自己定义的,如果你用的resultMap就是上面引入的-->
   <select id="selectAllp_type" resultType="java.lang.String">
     select distinct p_type from productinfo
   </select>
+
+    <!--就是页面传参数-->
+    <select id="selectAllProductsByP_type" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from productinfo where p_type=#{p_type,jdbcType=VARCHAR}
+    </select>
 
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

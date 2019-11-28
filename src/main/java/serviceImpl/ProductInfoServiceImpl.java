@@ -13,6 +13,13 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     //为什么?spring-mybatis已经扫描了,mapper,所以可以注入
     @Autowired
     ProductinfoMapper pfm;
+
+
+    @Override
+    public List<Productinfo> selectAllProductsByP_type(String p_type) {
+        return pfm.selectAllProductsByP_type(p_type);
+    }
+
     @Override
     public List<String> selectAllp_type() {
         return pfm.selectAllp_type();
