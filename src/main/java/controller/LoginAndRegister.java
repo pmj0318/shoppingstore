@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//你好的
 @RestController//等价属于 @Controller +@ Responbody
 public class LoginAndRegister {
     //如果就是报错,就看service那个注解家里没有..
