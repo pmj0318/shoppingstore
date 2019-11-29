@@ -139,26 +139,27 @@
       }
     });
 
+    //就是先写注册的页面
     $("#btnRegister").click(function(){
-      if($("#username2").val()!=''&&$("#password2").val()!=''&&$("#email").val!=''){
+      if($("#username2").val()!=''&&$("#password2").val()!=''&&$("#email").val!=''){//就是在用户文本框都给空的情况给个判断
         $.ajax({
           url:"register",
           type:"post",
           async:false,
-          data:{
+          data:{//参数的回调,就是获取这小额标签的返回值
             "username":$("#username2").val(),
             "password":$("#password2").val(),
             "email":$("#email").val()
           },
           success:function(data){
-            if(data=="existed"){
+            if(data=="existed"){//根据controller写的是什么在做判断
               $("#msg2").html("用户名已存在");
             }else if(data=="yes"){
               $("#msg2").html("注册成功");
             }else{
               $("#msg2").html("注册失败");
             }
-            return false;//就是为了防止虚读或者幻读,这种情况防止通知
+            return false;//就是为了防止虚读=幻读,这种情况防止通知,就是同时一秒钟插入7条数据
           }
         })
       }else{

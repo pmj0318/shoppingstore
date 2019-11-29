@@ -24,7 +24,7 @@
     select distinct p_type from productinfo
   </select>
 
-    <!--就是页面传参数-->
+    <!--就是页面给页面传参数-->
     <select id="selectAllProductsByP_type" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" /> from productinfo where p_type=#{p_type,jdbcType=VARCHAR}
     </select>
