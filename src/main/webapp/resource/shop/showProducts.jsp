@@ -3,131 +3,105 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    //这段代码的意思是获取当前项目的路径，如：http://localhost:8080/项目名称。
 %>
 <html>
 <head id="hh">
-    <base href="<%=basePath%>">
+    <base href="<%=basePath%>"><%--这是设置基础路径的,basePath为变量,表示href属性,就以你设置的为准--%>
     <title></title>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="<%=basePath%>resource/js/sHover.min.js"></script>
-    <link rel="stylesheet" href="<%=basePath%>resource/css/example.css">
+    <script src="<%=basePath%>resource/js/modernizr.custom.js"></script>
+    <link href="http://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resource/css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>resource/css/component.css" />
 
+
+   <style>
+
+       body{
+           background: #2A2B30;
+       }
+
+   </style>
 
 </head>
-<body id="body">
-<div id="part3" class="part">
-    <div class="container">
-        <%--云心有个写死的div,但是我们和数据库相连的,就不想要写死的数据,就要想办法让这里面的数据变成活的,--%>
-
-
-    </div><!-- /container -->
+<body >
+	<!-- Compare basket -->
+<div class="compare-basket">
+    <button class="action action--button action--compare"><i class="fa fa-check"></i><span class="action__text">Compare</span></button>
 </div>
+<!-- Main view -->
+<div class="view">
+    <!-- Product grid -->
+    <section class="grid">
+        <!-- Products -->
 
-<%--就是原生的js，就是会有节点加载不出来，所以建议srcpt代码放到下面，好管理，就是建议jsp放到下面--%>
+
+
+    </section>
+</div><!-- /view -->
+
+
+
+
+
+<!-- product compare wrapper -->
+<section class="compare">
+    <button class="action action--close"><i class="fa fa-remove"></i><span class="action__text action__text--invisible">Close comparison overlay</span></button>
+</section>
+
+
+
+
+    <script src="<%=basePath%>resource/js/classie.js"></script>
+    <script src="<%=basePath%>resource/js/main.js"></script>
+
 <script>
     $(function(){
 
-        //就是在这次函数然后 就是查询。
-        $.ajax({
-            url:"selectAllProductsByP_type",
-            type:"post",
-            data:{
-                "p_type":getQueryString("p_type")
-            },
-            success:function(data){
-                // alert(data);
-                //console.log(data);//就是在控制台打印信息(就是所有的获取的信息)..
+  $.ajax({
+   url:"selectAllProductsByP_type",
+      type:"post",
+      data:{
+      "p_type":getQueryString("p_type")
+      },
+      success:function(data){
 
-                for(var i=0;i<data.length;i++){
-                    var str="<div  class='sHoverItem'>" +
-                        "    <img  src='"+data[i].pic+"'>" +
-                        "    <span  class='sIntro'>" +
-                        "<h4 style='color:white'>"+data[i].pName+"</h4>" +
-                        "<p>"+data[i].intro+"</p>" +
-                        "<p>$"+data[i].price+"</p>"+
-                        "<button>立即购买</button>" +
-                        "<button>加入购物车</button>" +
-                        "</span>" +
-                        " </div>";
-                    $(".container").append(str);
-                }
+       for(var i=0;i<data.length;i++){
+       var str="<div class='product'>" +
+           "            <div class='product__info'>" +
+           "                <img class='product__image' src='<%=basePath%>resource/images/1.png' alt='Product 1' />" +
+           "                <h3 class='product__title'>"+data[i].pName+"</h3>" +
+           "                <span class='product__region extra highlight'>"+data[i].intro+"</span>" +
+           "                <span class='product__price highlight'>"+data[i].price+"</span>" +
+           "                <button class='action action--button action--buy'pid='"+data[i].pId+"'><i class='fa fa-shopping-cart'></i><span class='action__text cd-add-to-cart' >加入购物车</span></button>" +'' +
+           "                 <button class='action action--button action--buy'pid='"+data[i].pId+"'><i class='fa fa-shopping-cart'></i><span class='action__text cd-add-to-cart' >立即购买</span></button>" +
+           "            </div>" +
+           "            <label class='action action--compare-add'><input class='check-hidden' type='checkbox' /><i class='fa fa-plus'></i><i class='fa fa-check'></i><span class='action__text action__text--invisible'>比较商品</span></label>'" +
+           "        </div>";
 
+           $(".grid").append(str);
+       }
 
 
-                var b=new sHover('head','headIntro');
-                var a=new sHover("sHoverItem","sIntro");
-                a.set({
-                    slideSpeed:5,
-                    opacityChange:true,
-                    opacity:80
-                })
+          loadjscssfile("<%=basePath%>resource/js/classie.js","js");//loadjscssfile 打开页面时浏览器动态的加载文件
+          loadjscssfile("<%=basePath%>resource/js/main.js","js");
 
-                var example1Btn=document.getElementById('example1Btn');
-                var part1arrow=document.getElementById('part1arrow');
-                var example1=document.getElementById('example1');
-
-                var example2=new sHover('example2','intro2');
-                example2.set({
-                    slideSpeed:7,
-                    opacity:80,
-                    opacityChange:true
-                });
-
-                var example2prev=new sHover('example2prev','intro2prev');
-                example2prev.set({
-                });
-
-            }
-        });
+      }
+  });
 
 
+  $(".container").on("click",".addCart",function(){
+    alert($(this).attr("pid"));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  });
 
 
     });
 
-    function scrollToBottom(a){
-        if(windowHeight()){
-            clearInterval(a.scrollTimer);
-            var scrollSpeed=100;
-            a.scrollTimer=setInterval(function(){
-                document.documentElement.scrollTop+=scrollSpeed;
-                document.body.scrollTop+=scrollSpeed;
-                if((document.documentElement.scrollTop>=(document.documentElement.scrollHeight-windowHeight()))||(document.body.scrollTop>=(document.documentElement.scrollHeight-windowHeight()))){
-                    clearInterval(a.scrollTimer);
-                }
-            },13);
-        }else{
-            //a.setAttribute('href', 'http://www.baidu.com');
-        }
-    }
-    function windowHeight(){
-        if(document.documentElement){
-            return document.documentElement.clientHeight;
-        }else{
-            return document.body.clientHeight;
-        }
-    }
 
-    //就是地址栏获取里一个页面传过来的参数,就是个格式固定的,只需要改一下响应的参数就可以了
+
     function getQueryString(name){
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
@@ -143,16 +117,13 @@
             fileref.setAttribute("src", filename);//文件的地址
         }
         else if (filetype == "css") { //判定文件类型
-            alert("css");
             var fileref = document.createElement("link");
             fileref.setAttribute("rel", "stylesheet");
             fileref.setAttribute("type", "text/css");
             fileref.setAttribute("href", filename);
-            document.getElementsByTagName("head")[0].appendChild(fileref);
-            alert("拼接到head");
         }
-        // if (typeof fileref != "undefined")
-        //     document.getElementsByTagName("head")[0].appendChild(fileref);
+        if (typeof fileref != "undefined")
+            document.getElementsByTagName("head")[0].appendChild(fileref);
     }
 
 

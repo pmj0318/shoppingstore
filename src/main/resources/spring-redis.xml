@@ -50,6 +50,7 @@
         <property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
     </bean>
 
+    <!--很重要,里面的一些参数,后面用到jedis的额对象, JedisPool池中获取链接对象-->
     <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
         <constructor-arg index="0" ref="jedisPoolConfig2"/>
         <constructor-arg index="1" value="${redis.hostName}" />

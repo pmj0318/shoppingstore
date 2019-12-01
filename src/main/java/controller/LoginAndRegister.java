@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import serviceImpl.UserServiceImpl;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,7 +29,7 @@ public class LoginAndRegister {
     UserServiceImpl usi;
 
     @RequestMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password,@RequestParam String flag, HttpServletRequest req){
+    public String login(@RequestParam String username, @RequestParam String password, @RequestParam String flag, HttpServletRequest req, HttpServletResponse rsp){
     //先判断,是否哟这个用户,
     Userinfo ui = usi.selectByName(username);
     if (ui==null){
@@ -39,10 +41,44 @@ public class LoginAndRegister {
             //这个flag就是判断是否勾选住了密码.怎么让他记住使用session.
             if(flag.equals("yes")){
                 ui.setPassword(password);//就往文本框里面设置密码.
-                req.getSession().setAttribute("info",ui);//就是怎么在页面取值就是,el表达式,就是seesion.scope.属性
-                System.out.println("****"+req.getSession().getAttribute("info"));//测试用的信息.就是打印出的信息
-            }else{
-                req.getSession().removeAttribute("info");//如果mei有就是移除我们的session,当用户名下次不勾选的时候就是不记住的选项
+
+                //1.就是使用sesion获取is
+               // req.getSession().setAttribute("info",ui);//就是怎么在页面取值就是,el表达式,就是seesion.scope.属性
+              //  System.out.println("****"+req.getSession().getAttribute("info"));//测试用的信息.就是打印出的信息
+
+
+
+                //2.使用cookie记住密码
+               // String loginInfo = username+";"+password;
+                // Cookie userCookie=new Cookie("loginInfo",loginInfo);
+
+
+                Cookie cookie = new Cookie("username",username);
+                Cookie cookie1 = new Cookie("password",password);
+
+                cookie.setMaxAge(30*24*60*60);   //存活期为一个月 30*24*60*60
+                cookie1.setMaxAge(30*24*60*60);
+
+                rsp.addCookie(cookie);
+                rsp.addCookie(cookie1);
+
+                System.out.println("**********************************"+req.getCookies());//测试用的
+
+            }else {
+                //   req.getSession().removeAttribute("info");//如果mei有就是移除我们的session,当用户名下次不勾选的时候就是不记住的选项
+
+                Cookie[] cookies = req.getCookies();
+                System.out.println(cookies + "不选中");
+                if (cookies.length > 0) {
+                    for (Cookie c : cookies) {
+                        if (c.getName().equals("username") || c.getName().equals("password")) {
+                            c.setValue(null);
+                            c.setMaxAge(0);
+                            rsp.addCookie(c);
+                        }
+                    }
+                }
+
             }
             return "yes";
         }else{

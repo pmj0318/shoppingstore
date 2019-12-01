@@ -50,7 +50,11 @@
     <init-param>
       <param-name>contextConfigLocation</param-name>
       <!--classpath表示从class文件下找springmvc.xml配置文件，如果是classpath*表示不仅会在class路径找还会在jar中去找  -->
-      <param-value>classpath:springmvc.xml</param-value>
+      <!--一定要sevelt一起来,然后才能是使用,如果是使用多个可以在中间使用逗号隔开-->
+      <param-value>
+        classpath:springmvc.xml,
+        classpath:spring-redis.xml
+      </param-value>
     </init-param>
   </servlet>
 

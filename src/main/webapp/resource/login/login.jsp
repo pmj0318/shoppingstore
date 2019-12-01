@@ -88,85 +88,115 @@
     //4.当用户不记住密码的时候的而又应该是怎么实现的
     //5.进行功能的完善,就在密码和用户名不为空的时候,进行如下ajax判断
     //6.当标签内没有内容的时候在增加一种判断"用户名或者不为空",注册和登录
-  $(function(){
 
-//就是把session取出来,在jsp页面中使用
-    var username = "${sessionScope.info.username}";
-    var password = "${sessionScope.info.password}";
 
-//记住密码后从session中获取用户名或密码,填充到页面里
-    $("#username1").val(username);
-    $("#password1").val(password);
 
-    //3.就是判断当用户名文本框不为空的时候,就取来记住我的那个标签,往里面attr值,就是选中的,4.否则不选中的
-    if($("#username1").val()!=''&&$("#password1").val()!=''){
-      $("input[type='checkbox']").attr("checked","checked");
-    }else{
-      $("input[type='checkbox']").removeAttr("checked");
-    }
 
-    $("#btnLogin").click(function(){
-      var flag;//1.就是出之前代码的多余的else{ajax},就是当返回值为yes/或者no的时候
-      //在C之前就判断这个标签是否被选中,就是地址栏id是否等于on
-      if($("input[type='checkbox']").is(':checked')){
-        flag="yes";
-      }else{
-        flag="no";
-      }
-      if($("#username1").val()!=''&&$("#password1").val()!=''){//5.进行功能的完善,就在密码和用户名不为空的时候,进行如下ajax
-        $.ajax({
-          url:"login",
-          type:"post",
-          data:{
-            "username":$("#username1").val(),
-            "password":$("#password1").val(),
-            "flag":flag
-          },
-          success:function(data){
+    $(function(){
 
-            if(data=="none"){
-              $("#msg").html("用户不存在")
-            }else if(data=="yes"){
-              //跳转页面
-              $("#msg").html("成功")
-            }else{
-              $("#msg").html("用户名或密码错误")
-            }
+//1.就是把session取出来,在jsp页面中使用
+        <%--var username = "${sessionScope.info.username}";--%>
+        <%--var password = "${sessionScope.info.password}";--%>
+
+
+      //2.方法2：就是获取cookie
+      var username = "${cookie.username.value}"
+      var password = "${cookie.password.value}"
+
+
+
+    //2.方法1(更新) 就是使用cookie记住用户名更合理.,和后期的购物车功能加起来使用，就是下面就是可以或
+
+   // var username = getCookie("username");
+   // var password = getCookie("password");
+
+
+    //.记住密码后从session/cookie中获取用户名或密码,填充到页面里
+       $("#username1").val(username);
+        $("#password1").val(password);
+
+        //3.就是判断当用户名文本框不为空的时候,就取来记住我的那个标签,往里面attr值,就是选中的,4.否则不选中的
+        if($("#username1").val()!=''&&$("#password1").val()!=''){
+          $("input[type='checkbox']").attr("checked","checked");
+        }else{
+          $("input[type='checkbox']").removeAttr("checked");
+        }
+
+        $("#btnLogin").click(function(){
+          var flag;//1.就是出之前代码的多余的else{ajax},就是当返回值为yes/或者no的时候
+          //在C之前就判断这个标签是否被选中,就是地址栏id是否等于on
+          if($("input[type='checkbox']").is(':checked')){
+            flag="yes";
+          }else{
+            flag="no";
+          }
+          if($("#username1").val()!=''&&$("#password1").val()!=''){//5.进行功能的完善,就在密码和用户名不为空的时候,进行如下ajax
+            $.ajax({
+              url:"login",
+              type:"post",
+              data:{
+                "username":$("#username1").val(),
+                "password":$("#password1").val(),
+                "flag":flag
+              },
+              success:function(data){
+
+                if(data=="none"){
+                  $("#msg").html("用户不存在")
+                }else if(data=="yes"){
+                  //跳转页面
+                  $("#msg").html("成功")
+                }else{
+                  $("#msg").html("用户名或密码错误")
+                }
+              }
+            })
+          }else{//6.
+            $("#msg").html("用户名或密码为空")
+          }
+        });
+
+        //就是先写注册的页面
+        $("#btnRegister").click(function(){
+          if($("#username2").val()!=''&&$("#password2").val()!=''&&$("#email").val!=''){//就是在用户文本框都给空的情况给个判断
+            $.ajax({
+              url:"register",
+              type:"post",
+              async:false,
+              data:{//参数的回调,就是获取这小额标签的返回值
+                "username":$("#username2").val(),
+                "password":$("#password2").val(),
+                "email":$("#email").val()
+              },
+              success:function(data){
+                if(data=="existed"){//根据controller写的是什么在做判断
+                  $("#msg2").html("用户名已存在");
+                }else if(data=="yes"){
+                  $("#msg2").html("注册成功");
+                }else{
+                  $("#msg2").html("注册失败");
+                }
+                return false;//就是为了防止虚读=幻读,这种情况防止通知,就是同时一秒钟插入7条数据
+              }
+            })
+          }else{
+            $("#msg2").html("信息填写不完整")
           }
         })
-      }else{//6.
-        $("#msg").html("用户名或密码为空")
-      }
-    });
+      })
 
-    //就是先写注册的页面
-    $("#btnRegister").click(function(){
-      if($("#username2").val()!=''&&$("#password2").val()!=''&&$("#email").val!=''){//就是在用户文本框都给空的情况给个判断
-        $.ajax({
-          url:"register",
-          type:"post",
-          async:false,
-          data:{//参数的回调,就是获取这小额标签的返回值
-            "username":$("#username2").val(),
-            "password":$("#password2").val(),
-            "email":$("#email").val()
-          },
-          success:function(data){
-            if(data=="existed"){//根据controller写的是什么在做判断
-              $("#msg2").html("用户名已存在");
-            }else if(data=="yes"){
-              $("#msg2").html("注册成功");
-            }else{
-              $("#msg2").html("注册失败");
-            }
-            return false;//就是为了防止虚读=幻读,这种情况防止通知,就是同时一秒钟插入7条数据
-          }
-        })
-      }else{
-        $("#msg2").html("信息填写不完整")
+   //这个是2方法1.获取cookie，，就是比较复杂
+   /* function getCookie(name){
+      var strcookie = document.cookie;
+      var arrcookie = strcookie.split("; ");
+      for ( var i = 0; i < arrcookie.length; i++) {
+        var arr = arrcookie[i].split("=");
+        if (arr[0] == name){
+          return arr[1];
+        }
       }
-    })
-  })
+      return "";
+    }*/
 
 </script>
 
