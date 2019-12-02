@@ -4,6 +4,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
     //就是拼项目的全路径.仔细看还有端口号
+    //这段代码的意思是获取当前项目的路径，如：http://localhost:8080/项目名称。
 %>
 
 <html>
@@ -279,6 +280,7 @@
 <iframe  id="myframe"></iframe>
 <img src="<%=basePath%>resource/images/top.png" id="topImg"/>
 <script>
+
 $(function(){
 /*一进页面就发请求查询所有的类别*/
    $.ajax({
@@ -301,7 +303,7 @@ $(function(){
    $(".pieces").on("click",".future_ui__piece",function(){
        // alert($(this).children().children().children().text());//显示就是文本内容,嵌套.就是也能获取.会有包所以在网页上追加text(),会选择在前面children
        var type=$(this).children().children().children().text();
-       $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);
+       $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&username="+getQueryString("username"));
 
        $(".intro").hide();
        $("#myframe").show();
@@ -317,12 +319,16 @@ $(function(){
    });
 
 
-
-
-
 });
 
-
+//就是地址栏获取里上一个页面传过来的参数,就是个格式固定的,只需要改一下响应的参数就可以了
+function getQueryString(name){
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)
+        return  decodeURI(r[2]);
+    return null;
+}
 
 
 

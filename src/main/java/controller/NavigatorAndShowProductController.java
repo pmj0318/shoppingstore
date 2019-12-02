@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import serviceImpl.ProductInfoServiceImpl;
+
 import java.util.List;
+
 //@Controller
 //注解?w为什么在注解加进来?spring带他玩  ,原来就什么样的数据类型,就会找不到,就会下面respondbody
 //为甚要用注解,
@@ -23,13 +25,13 @@ public class NavigatorAndShowProductController {
 //通过url找方法,这个注解就是@RequestMapping
     @RequestMapping("/selectAllp_type")
     //需要单个就是String,需要多个list,
-    public List<String> selectAllp_type(){//这里是不要参数
+    public List<String> selectAllp_type() {//这里是不要参数
         return psi.selectAllp_type();
     }
 
 
     @RequestMapping("/selectAllProductsByP_type")
-    public  List<Productinfo> selectAllProductsByP_type(@RequestParam String p_type){
+    public List<Productinfo> selectAllProductsByP_type(@RequestParam String p_type) {
         return psi.selectAllProductsByP_type(p_type);
     }
 
