@@ -92,14 +92,30 @@
             // alert($(this).attr("pid"));
             //$(this).childrend.eq(1);就是获取第二个孩子,,比较常用
             //day06,就是获取cookie,返回的是字符串,就是取当前用户cookie
-            var username = getQueryString("username");
+           //  var username = getQueryString("username");会有问题进行,day07进行修改
 
-            if (username == "null" || username == "" || username == undefined) {
-                alert("没登录")
+            if (getCookie("username") == "null" ||getCookie("username") == "" || getCookie("username") == undefined) {
+                //alert("没登录")测试用的
                 location.href = "<%=basePath%>resource/login/login.jsp";
             } else {
-                alert(username);
-                alert("登录");
+               // alert(username);
+              // alert("登录");
+                //day07,加入购物车只够干嘛
+              //  alert(getCookie("username"))
+                $.ajax({
+                 url:"addCar",
+                    type:"post",
+                    data:{
+                     "pid":$(this).attr("pid"),
+                        "username":getCookie("username")//1.就是从上一个页面的传指,getQueryString就是不穿的,,2.可以从cookie里面获取
+
+                    },
+                    success:function (data) {
+                        
+                    }
+                    
+                });
+
             }
         });
 

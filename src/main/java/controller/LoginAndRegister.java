@@ -44,12 +44,12 @@ public class LoginAndRegister {
                 //  if(flag.equals("yes")){
                 //ui.setPassword(password);//就往文本框里面设置密码.
 
-                //1.就是使用sesion获取is
+                //1.day04就是使用sesion获取is
                 // req.getSession().setAttribute("info",ui);//就是怎么在页面取值就是,el表达式,就是seesion.scope.属性
                 //  System.out.println("****"+req.getSession().getAttribute("info"));//测试用的信息.就是打印出的信息
 
 
-                //2.使用cookie记住密码
+                //2.day05使用cookie记住密码
                 // String loginInfo = username+";"+password;
                 // Cookie userCookie=new Cookie("loginInfo",loginInfo);
 
@@ -64,7 +64,7 @@ public class LoginAndRegister {
                 rsp.addCookie(cookieP);
                 System.out.println("**********************************" + req.getCookies());//测试用的
 
-                //day06增加的模块,
+                //day06增加的模块,新一个一个cookie,用一标记用户是否判断勾选,反向逻辑
                 if (flag.equals("yes")) {
                     Cookie cookie = new Cookie("flag", "no");
                     cookie.setMaxAge(500000);

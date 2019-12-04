@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script  src="<%=basePath%>resource/js/login.js"></script>
     <link rel="stylesheet" href="<%=basePath%>resource/css/login.css" type="text/css" media="all">
     <style>
         #msg, #msg2 {
@@ -38,6 +39,16 @@
             <div id="msg"></div>
         </div>
         <a href="<%=path%>/resource/login/forgetPwd.jsp" target="_blank">忘记密码?</a>
+        <div class="social-icons w3layouts agileits">
+            <p>- 其他方式登录 -</p>
+            <ul>
+                <li class="qq"><a href="#"> <span class="icons w3layouts agileits"></span> <span class="text w3layouts agileits">QQ</span></a></li>
+                <li class="weixin w3ls"><a href="#"> <span class="icons w3layouts"></span> <span class="text w3layouts agileits">微信</span></a></li>
+                <li class="weibo aits"><a href="#"> <span class="icons agileits"></span> <span class="text w3layouts agileits">微博</span></a></li>
+            </ul>
+        </div>
+
+
     </div>
     <div class="register w3layouts agileits" id="registerDiv">
         <h2>注 册</h2>
@@ -62,13 +73,13 @@
         var password = "${cookie.password.value }";
         var usernames = "${cookie.flag.value}"
 
-        if (usernames == 'no') {
+        if (usernames == 'no') {//  day06是用户勾选了
             //记住密码后从cookie中获取用户名或密码,填充到页面里
             $("#username1").val(username);
             $("#password1").val(password);
             $("input[type='checkbox']").attr("checked", "checked");
         } else {
-            $("input[type='checkbox']").removeAttr("checked");
+            $("input[type='checkbox']").removeAttr("checked");//删除节点的值checked
         }
 
         $("#btnLogin").click(function () {
@@ -91,8 +102,10 @@
                         if (data == "none") {
                             $("#msg").html("用户不存在")
                         } else if (data == "yes") {
-                            //跳转页面
-                            location.href = "<%=basePath%>resource/shop/navigator.jsp?username=" + $("#username1").val();
+                            //跳转页面.就给他传个参数,
+                            //拼接就是,1.+username=" + $("#username1").val();2.就是如下的方式使用用cookie
+                            location.href = "<%=basePath%>resource/shop/navigator.jsp";
+
                             $("#msg").html("成功")
                         } else {
                             $("#msg").html("用户名或密码错误")
@@ -122,7 +135,7 @@
                         } else {
                             $("#msg2").html("注册失败");
                         }
-                        return false;
+                        return false;//就是为了防止虚读=幻读,这种情况防止通知,就是同时一秒钟插入7条数据
                     }
                 })
             } else {

@@ -34,6 +34,13 @@
            bottom:200px;
        }
 
+      #carImg{
+          position: fixed;
+          right:10px;
+          bottom:150px;
+       }
+
+
    </style>
 
 </head>
@@ -278,7 +285,9 @@
     </div>
 </div>
 <iframe  id="myframe"></iframe>
+<%--动态的引入图片--%>
 <img src="<%=basePath%>resource/images/top.png" id="topImg"/>
+<img src="<%=basePath%>resource/images/car.png" id="carImg"/>
 <script>
 
 $(function(){
@@ -303,7 +312,8 @@ $(function(){
    $(".pieces").on("click",".future_ui__piece",function(){
        // alert($(this).children().children().children().text());//显示就是文本内容,嵌套.就是也能获取.会有包所以在网页上追加text(),会选择在前面children
        var type=$(this).children().children().children().text();
-       $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&username="+getQueryString("username"));
+       //   $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&username="+getQueryString("username"));就是从上一个页面传值,到下一个页面接受
+       $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);//就是使用cokie
 
        $(".intro").hide();
        $("#myframe").show();
@@ -319,6 +329,17 @@ $(function(){
    });
 
 
+   $("#carImg").click(function () {//购物车引入发哦那个界面函数在那个界面写
+       if (getCookie("username") == "null" ||getCookie("username") == "" || getCookie("username") == undefined) {
+           //alert("没登录")测试用的
+           location.href = "<%=basePath%>resource/login/login.jsp";
+       }else{
+           //就是代开新页面,还是替换新页面,(window.loaction.href)
+           window.open("<%=basePath%>resource/shop/carItems.jsp");
+       }
+
+   })
+
 });
 
 //就是地址栏获取里上一个页面传过来的参数,就是个格式固定的,只需要改一下响应的参数就可以了
@@ -330,6 +351,18 @@ function getQueryString(name){
     return null;
 }
 
+//就是是否cookie的方法,
+function getCookie(name) {
+    var strcookie = document.cookie;
+    var arrcookie = strcookie.split(";");
+    for (var i = 0; i < arrcookie.length; i++) {
+        var arr = arrcookie[i].split("=");
+        if (arr[0] == name) {
+            return arr[1];
+        }
+    }
+    return "";
+}
 
 
 </script>
