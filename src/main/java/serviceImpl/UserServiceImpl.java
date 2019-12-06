@@ -13,10 +13,17 @@ public class UserServiceImpl implements UserService {
 @Autowired
     UserinfoMapper uim;
 
+
+    @Override
+    public String selectEmailByUsername(String username) {
+        return uim.selectEmailByUsername(username);
+    }
+
     @Override
     public Userinfo selectByName(String username) {
         return uim.selectByName(username);
     }
+
 
     @Override
     public int deleteByPrimaryKey(Integer uId) {

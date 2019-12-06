@@ -16,6 +16,12 @@
     <link rel="stylesheet" href="<%=basePath%>resource/css/style.css">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
+    <%--这个是引入搜获框的头文件--%>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<%=basePath%>resource/css/search.css">
+
    <style>
 
        #myframe{
@@ -329,7 +335,7 @@ $(function(){
    });
 
 
-   $("#carImg").click(function () {//购物车引入发哦那个界面函数在那个界面写
+   $("#carImg").click(function () {//day07(周二)购物车引入发哦那个界面函数在那个界面写
        if (getCookie("username") == "null" ||getCookie("username") == "" || getCookie("username") == undefined) {
            //alert("没登录")测试用的
            location.href = "<%=basePath%>resource/login/login.jsp";
@@ -366,6 +372,14 @@ function getCookie(name) {
 
 
 </script>
+
+
+<div class="search d1">
+    <form>
+        <input type="text" placeholder="搜索从这里开始...">
+        <button type="submit"></button>
+    </form>
+</div>
 
 </body>
 </html>

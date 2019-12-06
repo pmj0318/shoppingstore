@@ -7,6 +7,9 @@ import java.util.List;
 public interface UserService {
 
     Userinfo selectByName(String username);
+
+    String selectEmailByUsername(String username);
+
     int deleteByPrimaryKey(Integer uId);
 
     int insert(Userinfo record);

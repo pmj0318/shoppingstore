@@ -22,10 +22,17 @@
     from USERINFO
     where U_ID = #{uId,jdbcType=DECIMAL}
   </select>
+
+  <!--就是自己的定义的String类型-->
+  <select id="selectEmailByUsername" resultType="java.lang.String">
+    select email from USERINFO where username=#{username,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from USERINFO
     where U_ID = #{uId,jdbcType=DECIMAL}
   </delete>
+
   <insert id="insert" parameterType="entity.Userinfo" >
   /*j就是插入自己序列号主键的序列号..*/
     <selectKey keyProperty="uId" order="BEFORE" resultType="int">

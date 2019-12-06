@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/resetcar.css">
     <link rel="stylesheet" href="<%=basePath%>resource/css/carts.css">
-
+    <link rel="stylesheet" href="<%=basePath%>resource/css/search.css">
 
     <style>
 
@@ -220,7 +220,7 @@
                         "                <li class=\"list_amount\">" +
                         "                    <div class=\"amount_box\">" +
                         "                        <a href='javascript:;' class='reduce reSty' pid='"+data[i].pId+"'>-</a>" +
-                        "                        <input type='text' value='"+data[i].pNum+"' class='sum'>" +
+                        "                        <input type='text' value='"+data[i].pNum+"' class='sum'  onkeyup=\"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\\D/g,'')}\" onafterpaste=\"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\\D/g,'')}\">" +
                         "                        <a href='javascript:;' class='plus' pid='"+data[i].pId+"'>+</a>" +
                         "                    </div>" +
                         "                </li>" +
@@ -352,7 +352,7 @@
         });
 
 
-        $(".cartBox").on("fousout",".sum",function() {
+        $(".cartBox").on("onkeyup",".sum",function() {
 
                 $.ajax({
                     url: "handdata",
@@ -406,29 +406,33 @@
 
         var checkCode;
         $("#sendMail").click(function () {
+            alert(getCookie("username"));
             $.ajax({
-                url:"sendEmail",
+                url:"sendEmail",//就是发送邮箱
                 type:"post",
                 data:{
                     "username":getCookie("username")
+
                 },
                 success:function(data){
-                    checkCode=data;
+                    checkCode=data;//验证码,检验
+                   if(data=="yes"){//就是写个div定时显示,以后消失
 
+                   }
 
                 }
             })
         })
 
 
-        $("#surePay").click(function () {
+        $("#surePay").click(function () {//确认付款,就是多个订单一起支付
             // if($("#code").val()==checkCode){
             $("#big").hide();
             $("#MyDiv").hide();
 
 
             var labels=$("label[id!='firstLabel']label[class='mark']");
-            for(var i=0;i<labels.length;i++){
+            for(var i=0;i<labels.length;i++){//labels多个商品支付,一个进行遍历,循环进行发送ajax
 
                 labels.eq(i).parent().parent().remove();
                 $("total_text").html("0.00");
@@ -436,7 +440,7 @@
                 $(".calBtn1").removeClass("payDiv");
                 $(".calBtn1").css("background","#E5E5E5");
 
-                $.ajax({
+                $.ajax({//进行循环发送ajax
                     url:"removeItems",
                     type:"post",
                     data:{
@@ -447,7 +451,7 @@
                 });
 
 
-                $.ajax({
+                $.ajax({//进行循环发送ajax
                     url:"deleteProductNum",
                     type:"post",
                     data:{
@@ -474,7 +478,7 @@
 
 
 
-    function calcuPrice(labels) {
+    function calcuPrice(labels) {//calcuPrice就是计算价钱//labels就是标签
         changepayDivColor(labels);
 
         if(labels.length>=2){
