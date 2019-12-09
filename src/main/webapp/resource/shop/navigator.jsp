@@ -314,12 +314,27 @@ $(function(){
    });
 
 
+
    //2.就是这个on就是是想要获取点击当前想要的信息,哟啊不然那我怎么知道我点点击是哪个文本框
    $(".pieces").on("click",".future_ui__piece",function(){
        // alert($(this).children().children().children().text());//显示就是文本内容,嵌套.就是也能获取.会有包所以在网页上追加text(),会选择在前面children
        var type=$(this).children().children().children().text();
-       //   $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&username="+getQueryString("username"));就是从上一个页面传值,到下一个页面接受
-       $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);//就是使用cokie
+
+       //就是自己的页面获取然后就是传值下一个页面,计算条数
+       $.ajax({
+           url:"selectTotallPage",
+           type:"post",
+           data:{
+               "p_type":type
+           },
+           success:function (data) {
+               //   $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&username="+getQueryString("username"));就是从上一个页面传值,到下一个页面接受
+               $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&page="+data);//就是使用cokie
+           }
+       });
+
+//   $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&username="+getQueryString("username"));就是从上一个页面传值,到下一个页面接受
+       //$("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);//就是使用cokie
 
        $(".intro").hide();
        $("#myframe").show();

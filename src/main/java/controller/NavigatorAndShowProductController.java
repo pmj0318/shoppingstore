@@ -31,9 +31,19 @@ public class NavigatorAndShowProductController {
 
 
     @RequestMapping("/selectAllProductsByP_type")
-    public List<Productinfo> selectAllProductsByP_type(@RequestParam String p_type) {
-        return psi.selectAllProductsByP_type(p_type);
+    public List<Productinfo> selectAllProductsByP_type(@RequestParam String p_type,@RequestParam Integer page) {
+        return psi.selectAllProductsByP_type(p_type,page);
     }
 
+    @RequestMapping("/selectTotallPage")
+    public Integer selectTotallPage(@RequestParam String p_type){
+        return  psi.selectTotallPage(p_type);
+    }
+
+    @RequestMapping("/getproductinfo")
+    public Productinfo getproductinfo(@RequestParam Integer pId){
+
+        return psi.selectByPrimaryKey(pId);
+    }
 
 }

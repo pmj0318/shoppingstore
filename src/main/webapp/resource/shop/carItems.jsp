@@ -120,7 +120,7 @@
 <body>
 <section class="cartMain">
 
-    <div class="cartMain_hd">
+    <div class="cartMain_hd"><%--就是后期是商家的页面的商家的页面商品里面--%>
         <ul class="order_lists cartTop">
             <li class="list_chk">
                 <!--所有商品全选-->
@@ -296,7 +296,7 @@
 
 
         $(".cartBox").on("click",".plus",function(){//数量是加数量
-
+//就是说今后商家不同,商品就不是拼在order_lists,而是就是拼在,cartMain_hd这个标签里面
             $(this).prev().val(parseInt($(this).prev().val())+1);
 
             var labels=$("label[id!='firstLabel']label[class='mark']");

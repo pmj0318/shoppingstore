@@ -1,14 +1,17 @@
 package mapper;
 
 import entity.Productinfo;
+import org.apache.ibatis.annotations.Param;
 
 
 import java.util.List;
 
 public interface ProductinfoMapper {
+    int selectTotallPage( String p_type);//计算总条数
 
     //根据种类查询
-    List<Productinfo> selectAllProductsByP_type(String p_type);
+    List<Productinfo> selectAllProductsByP_type(@Param(value = "p_type") String p_type, @Param(value="page") Integer page);
+
     //操作是商品就到这张表,//数组不好转,list
     //<>泛型,你要的就是p_type,可以是String.是对象-就是方便一点,存储的数据多
     List<String> selectAllp_type();

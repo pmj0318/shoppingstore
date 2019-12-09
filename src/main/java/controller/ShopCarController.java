@@ -179,7 +179,8 @@ public String getEmailCount(@RequestParam String username,  HttpServletResponse 
  * 每一个用户都是一个线程,这样都进行排队,没哟真正的并发,cpu帮你调度,所以就是优先,可以看源码
  *4.就是当是yes的时候,证明是可以付款,库里面也有库存,就是说可以生成订单,要想怎么才能生成订单?既然是在你return的时候,
  * 干脆就在你return"yes"的时候,配置一个切面,生成订单
- *
+ *默认:就是一加商家,当有好多商家怎么实现生成订单..
+ * 根据用户名,查询pid,怎么对list集合分类,怎么实现?pid是唯一的,pid的可以查询商家id
  */
 if(pi.getpNum()>=pnum){
     pi.setpNum(pi.getpNum()-pnum);

@@ -16,8 +16,13 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
 
     @Override
-    public List<Productinfo> selectAllProductsByP_type(String p_type) {
-        return pfm.selectAllProductsByP_type(p_type);
+    public int selectTotallPage(String p_type) {
+        return pfm.selectTotallPage(p_type);
+    }
+
+    @Override
+    public List<Productinfo> selectAllProductsByP_type(String p_type,Integer page) {
+        return pfm.selectAllProductsByP_type(p_type,page);
     }
 
     @Override
