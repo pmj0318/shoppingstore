@@ -23,9 +23,14 @@
     where U_ID = #{uId,jdbcType=DECIMAL}
   </select>
 
-  <!--就是自己的定义的String类型-->
+  <!--查询验证码就是根据用户名,就是自己的定义的String类型-->
   <select id="selectEmailByUsername" resultType="java.lang.String">
     select email from USERINFO where username=#{username,jdbcType=VARCHAR}
+  </select>
+
+  <!--就是用户根据用户名查询id-->
+  <select id="selectUidByUsername" resultType="java.lang.Integer">
+  select u_id from USERINFO where username=#{username,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -34,10 +39,12 @@
   </delete>
 
   <insert id="insert" parameterType="entity.Userinfo" >
-  /*j就是插入自己序列号主键的序列号..*/
+
+  /*j就是插入自己序列号主键的序列号.uId是这个xml里面的实体类的,数据库里面的u_Id.  seq_user_info_id及时创建主键序列*/
     <selectKey keyProperty="uId" order="BEFORE" resultType="int">
       select seq_user_info_id.nextval from dual
     </selectKey>
+
     insert into USERINFO (U_ID, USERNAME, PASSWORD,
       EMAIL, REGISTER_TIME)
     values (#{uId,jdbcType=DECIMAL}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},

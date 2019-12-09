@@ -53,6 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
      <div class="send-button w3layouts agileits" id="sendmsgDiv">    
         <input type="button" value="发送验证码" id="sendmsg">
+         <div id="msg1"></div>
      </div>
 
       <input type="text"      id="code"  placeholder="输入验证码" >
@@ -83,64 +84,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript">
 $(function(){
-    window.randNum;
- $("#sendmsg").click(function () {
-   if($("#username").val()==''){
-       $("#msg").html("用户名不能为空");
-       return;
-   }else{
 
-       $.ajax({
-        url:"getUser",
-           type:"post",
-           data:{
-            "username":$("#username").val()
-           },
-           success:function(data){
-            if(isNaN(data)){
-                $("#msg").html("用户名不存在");
+    window.randNum;//就是相当于定义一个全局变量var randNum;
 
-            }else{
-                $("#msg").html("验证码已发送");
-                 randNum=data;
-                 alert(data);
-            }
-
-           }
-
-       });
-   }
-
- });
-
-
-
-    $("#updatePwd").click(function () {
-        if($("#username").val()==''||$("#code").val()==''||$("#password").val()==''){
-            $("#msg").html("验证码或密码不能为空");
-            return;
+    $("#sendmsg").click(function () {
+        if($("#username").val()==''){
+          $("#msg").html("用户名不能为空");
+        //  return;
         }else{
-
-            $.ajax({
-                url:"updatePWD",
+            $.ajax({//既然是返回一个用户是不是要判断是不是为空呢然后及时加上if+else
+                url:"getUserAndVcode",
                 type:"post",
                 data:{
-                    "username":$("#username").val(),
-                    "password":$("#password").val(),
-                    "code":$("#code").val(),
-                    "randNum":randNum
+                    "username" :$("#username").val()
                 },
-                success:function(data){
-                    if(data=='ok'){
-                        $("#msg").html("密码修改成功");
-                    }else if(data=='no'){
-                        $("#msg").html("密码修改失败");
-                    }else if(data=='errorcode'){
-                        $("#msg").html("验证码错误");
+                success:function (data) {
+                    if(isNaN(data)){
+                        $("#msg").html("用户名不存在");
+                        window.setTimeout(clearMsg,50000);
                     }else{
-                        $("#msg").html("用户不存在");
+                        $("#msg1").html("验证码已发送");
+                        window.setTimeout(clearMsg,5000);
+                        randNum=data;
+                        alert(data)
                     }
-
                 }
 
             });
@@ -149,11 +116,55 @@ $(function(){
     });
 
 
+   $("#updatePwd").click(function () {
+  if($("#username").val()==''||$("#code").val()==''||$("#password").val()==''){
+   $("#msg").html("用户名或者密码不能为空");
+  // return; //就是把当前的函数不存在
+  }else{
+      $.ajax({
+          url:"updatePWD",
+          type:"post",
+          data:{
+              "username":$("#username").val(),
+              "password":$("#password").val(),
+              "code":$("#code").val(),
+              "randNum":randNum
+          },
+          success:function (data) {
+              if(data=='yes'){
+                  $("#msg").html("用户密码修改成功");
+                  window.setTimeout(clearMsg,5000);
+              }else if(data=='no'){
+                  $("#msg").html("用户密码修改失败");
+                  window.setTimeout(clearMsg,5000);
+              }else if(data=='errorcode'){
+                  $("#msg1").html("验证码错误");
+                  window.setTimeout(clearMsg,5000);
+              } else{
+                  $("#msg").html("用户名不存在");
+              }
+          }
 
+      })
+  }
+
+
+    })
+
+
+
+
+
+    function clearMsg(){
+        $("#msg1").html('');
+    }
 
 
 
 });
+
+
+
 
 </script>
 

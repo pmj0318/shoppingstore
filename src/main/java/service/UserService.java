@@ -5,6 +5,7 @@ import entity.Userinfo;
 import java.util.List;
 
 public interface UserService {
+    int selectUidByUsername(String username);
 
     Userinfo selectByName(String username);
 

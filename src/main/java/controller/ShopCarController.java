@@ -99,7 +99,7 @@ public class ShopCarController {
 
     }
 
-    //购物车的数量
+    //移除购物车的数量
 @RequestMapping("/removeItems")
     public void removeItems(@RequestParam String pid,@RequestParam String username){
     Jedis jedis = jedisPool.getResource();
@@ -164,10 +164,11 @@ public String getEmailCount(@RequestParam String username,  HttpServletResponse 
 
 }
 
-@RequestMapping("/deleteProductNum")
-    public synchronized  String deleteProductNum (@RequestParam String pid,@RequestParam Integer pnum,@RequestParam String username){//username是干嘛的.就是aop,获取是谁买的,
 
-    Productinfo pi = psi.selectByPrimaryKey(Integer.parseInt(pid));//就是先查后改,
+@RequestMapping("/deleteProductNum")
+    public synchronized  String deleteProductNum (@RequestParam String username,@RequestParam Integer pid,@RequestParam Integer pnum){//username是干嘛的.就是aop,获取是谁买的,
+
+    Productinfo pi = psi.selectByPrimaryKey(pid);//就是先查后改,
 
 /**
  * 1. pi.setpNum(pi.getpNum()-pnum);//剩下库存=数据库获取的库存-购买的数量
@@ -176,6 +177,8 @@ public String getEmailCount(@RequestParam String username,  HttpServletResponse 
  * 3.有没有并发问题,当有没有同时库存都为1的时候,两个人都付款了,锁,代码的快,还是方法,就是大名if这里所上还是会有问题
  * 就是直接带所方法让每一用户就是支付完在走,其他用户排对,就是自己的这样即使速度慢点,但是不会有 问题
  * 每一个用户都是一个线程,这样都进行排队,没哟真正的并发,cpu帮你调度,所以就是优先,可以看源码
+ *4.就是当是yes的时候,证明是可以付款,库里面也有库存,就是说可以生成订单,要想怎么才能生成订单?既然是在你return的时候,
+ * 干脆就在你return"yes"的时候,配置一个切面,生成订单
  *
  */
 if(pi.getpNum()>=pnum){
@@ -183,13 +186,9 @@ if(pi.getpNum()>=pnum){
         psi.updateByPrimaryKey(pi);
         return "yes";
     }else{
-
       return "no";
     }
 }
-
-
-
 
 
 

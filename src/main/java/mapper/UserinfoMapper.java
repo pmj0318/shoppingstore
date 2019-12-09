@@ -3,10 +3,12 @@ package mapper;
 import entity.Userinfo;
 
 public interface UserinfoMapper {
-    //及时自己定义一个方法
-    Userinfo selectByName(String username);
+
+    int selectUidByUsername(String username);//根据用户名查询到id
 
     String selectEmailByUsername(String username);//发送邮箱
+
+    Userinfo selectByName(String username);    //及时自己定义一个方法
 
     int deleteByPrimaryKey(Integer uId);
 

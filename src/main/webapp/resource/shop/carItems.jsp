@@ -179,10 +179,13 @@
         <form>
             <input type="text" placeholder="请输入验证码完成付款" id="code">
         </form>
+
     </div>
 
     <button type="button" class="btn btn-success" id="sendMail">发送验证码</button>
     <button type="button" class="btn btn-success" id="surePay">确认付款</button>
+    <div id="msg"></div>
+
 </div>
 
 
@@ -411,14 +414,14 @@
                 url:"sendEmail",//就是发送邮箱
                 type:"post",
                 data:{
-                    "username":getCookie("username")
-
+                    "username":getCookie("username"),
+                    "sendMail":$("sendMail").val()
                 },
                 success:function(data){
                     checkCode=data;//验证码,检验
-                   if(data=="yes"){//就是写个div定时显示,以后消失
-
+                   if(data =='yes' ) {//就是写个div定时显示,以后消失,自己就是一个人功能
                    }
+
 
                 }
             })
@@ -451,7 +454,7 @@
                 });
 
 
-                $.ajax({//进行循环发送ajax
+                $.ajax({//进行循环发送ajax,删茶数量并结算订单
                     url:"deleteProductNum",
                     type:"post",
                     data:{
@@ -471,6 +474,10 @@
             // }
         })
 
+        //就是定时器
+        function clearMsg(){
+            $("#msg").html('');
+        }
 
 
 
@@ -537,6 +544,9 @@
         }
         return null;
     }
+
+
+
 </script>
 
 </body>

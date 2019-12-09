@@ -10,12 +10,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import serviceImpl.UserServiceImpl;
 
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 
 //你好的你的夫人
 @RestController//等价属于 @Controller +@ Responbody
@@ -27,6 +33,10 @@ public class LoginAndRegister {
 //意义上就是注入的service是实现类,可以不可以创建service 是是实现类,,没有就是后面springboot就是到服务没法发布
     @Autowired
     UserServiceImpl usi;
+
+    @Autowired
+    ShopCarController shopcar;//主要是为了使用发送验证码的才自动注入这个类
+
 
     @RequestMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, @RequestParam String flag, HttpServletRequest req, HttpServletResponse rsp) {
@@ -131,7 +141,7 @@ public class LoginAndRegister {
         }
     }
 
-    @RequestMapping("/ChangePassword")
+    @RequestMapping("/ChangePassword")//自己的界面的是特别low
     public String ChangePassword(@RequestParam String username, @RequestParam String password) {
         Userinfo ui = usi.selectByName(username);
         if (ui == null) {
@@ -152,34 +162,73 @@ public class LoginAndRegister {
 
 
 
-    /*忘记密码中的修改密码*/
-    @RequestMapping("/updatePWD")
-    public String  updatePWD(@RequestParam String username,@RequestParam String password,@RequestParam String code,@RequestParam String randNum){
-        Userinfo ui=usi. selectByName(username);
 
+
+    /*获取验证码*/
+    @RequestMapping("/getUserAndVcode")
+    public String getUser(@RequestParam String username, HttpServletRequest req,HttpServletResponse resp) throws IOException, MessagingException {
+        Userinfo ui=usi.selectByName(username);
+
+       // int randomNum=(int)((Math.random()*9+1)*100000);//1.这个是使用shopcar里面那个sendEamil
         if(ui!=null){
-            /*获取修改日期，将Data类型转为String类型*/
-            Date data=new Date();
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-            String time=sdf.format(data);
-            ui.setRegisterTime(time);
-
-            //获取密码
-            ui.setPassword(DigestUtils.md5Hex(password.getBytes()));
-            if(code.equals(randNum)){
-                int line=usi.updateByPrimaryKeySelective(ui);
-                if(line>0){
-                    System.out.println("密码修改成功");
-                    return "ok";
-                }else {
-                    return "no";
-                }
-            }else {
-                return "errorcode";
-            }
-        }else {
-            return "false";
+           //shopcar.sendEmail(ui.getEmail(),randomNum,req,resp);//这个方法里面有就是自己的会有可以注入去使用
+            //return String.valueOf(randomNum);
+            return shopcar.getEmailCount(username,resp,req);//2.就是一个简便的方法直接之前写个,那个发送验证方法
+        }else{
+            return "no";
         }
+
     }
+
+
+//修改密码
+@RequestMapping("/updatePWD")
+public String  updatePWD(@RequestParam String username,@RequestParam String password,@RequestParam String code,@RequestParam String randNum){
+    Userinfo ui = usi.selectByName(username);
+    if (ui != null) {
+        //获取date的日期,将date类型转换为String类型
+       Date date = new Date();
+       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       String time = sdf.format(date);
+       ui.setRegisterTime(time);
+
+
+       //获取密码
+        ui.setPassword(DigestUtils.md5Hex(password.getBytes()));//就是或有错误ui.setPassword(password);
+
+      /*      int i = usi.updateByPrimaryKeySelective(ui);
+       if(i>0){
+            return "yes";
+        }else{
+            return "no";
+        }*/
+      //正常的逻辑似乎这样没错,但是想想这里用到了验证码,是不是要判断验证码是不是样才能修改,
+        if(code.equals(randNum)){
+            int i = usi.updateByPrimaryKeySelective(ui);
+            if (i>0){//修改成功
+                System.out.println("密码修改成功");
+                return "yes";
+            }else{
+                return "no";
+            }
+        }else{//验证码错误
+            return "errorcode";
+        }
+    } else {//用户不存在
+        return "false";
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 }
