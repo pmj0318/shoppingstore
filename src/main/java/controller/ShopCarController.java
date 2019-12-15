@@ -122,13 +122,15 @@ public void reduceItemsNum(@RequestParam String pid,@RequestParam String usernam
         jedis.del(username);//hdel
         jedis.hmset(username, map);
     }else{
-         map.put(pid, String.valueOf(Integer.parseInt(map.get(pid))-1));//map.get(pid)+1就是获取原来的数量+1转话完成,加上1
-         jedis.hmset(username, map);
 
+      /*   //亲测.就是是要美好值这样方法实事假上就是会一致进行件数,是会有漏洞的
+      map.put(pid, String.valueOf(Integer.parseInt(map.get(pid))-1));//map.get(pid)+1就是获取原来的数量+1转话完成,加上1
+         jedis.hmset(username, map);
+*/
         //或者就是方法2,自己方法,
-       /* map.remove(pid);
+        map.remove(pid);
         jedis.del(username);
-        jedis.hmset(username,map);*/
+        jedis.hmset(username,map);
 
     }
 }

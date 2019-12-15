@@ -21,29 +21,36 @@ public class NavigatorAndShowProductController {
     @Autowired
     ProductInfoServiceImpl psi;
 
+
     //@RequestMapping会根据请求名找到对应的方法.,写在方法上面就绑定了,请我这个请求过来了就执行这个方法.
 //通过url找方法,这个注解就是@RequestMapping
     @RequestMapping("/selectAllp_type")
     //需要单个就是String,需要多个list,
-    public List<String> selectAllp_type() {//这里是不要参数
+    public List<String> selectAllp_type() {//这里是不要参数,主界面的种类
         return psi.selectAllp_type();
     }
 
 
-    @RequestMapping("/selectAllProductsByP_type")
+    @RequestMapping("/selectAllProductsByP_type")//day11.进行页面条数的计算,传产品和页数
     public List<Productinfo> selectAllProductsByP_type(@RequestParam String p_type,@RequestParam Integer page) {
         return psi.selectAllProductsByP_type(p_type,page);
     }
 
-    @RequestMapping("/selectTotallPage")
+    @RequestMapping("/selectTotallPage")//day11进行根据个数,动态算页面数
     public Integer selectTotallPage(@RequestParam String p_type){
         return  psi.selectTotallPage(p_type);
     }
 
-    @RequestMapping("/getproductinfo")
+    @RequestMapping("/getproductinfo")//day11.详情页
     public Productinfo getproductinfo(@RequestParam Integer pId){
-
         return psi.selectByPrimaryKey(pId);
     }
+
+
+    @RequestMapping("/selectAllProductsByP_types")//day12,后台上下架根据商品查询出来所有的产品,用上衣个页面,就是只会有显示第一页的产品
+    public List<Productinfo> selectAllProductsByP_type(@RequestParam String p_type) {
+        return psi.selectAllProductsByP_types(p_type);
+    }
+
 
 }

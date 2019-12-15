@@ -11,7 +11,7 @@
     <title>商品详情</title>
     <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
     <script   src="resource/js/modernizr-custom-v2.7.1.min.js"></script>
-    <link rel="stylesheet" href="<%=basePath%>resource/css/shouye.css"/>
+    <link rel="stylesheet" href="resource/css/shouye.css"/>
 
 <style>
     body{
@@ -124,12 +124,12 @@
         })
 
 
-//day11
+
         $.ajax({
            url:"getproductinfo",
             type:"post",
             data:{
-             "pId":getQueryString("pi")
+             "pId":getQueryString("p_id")
             },
             success:function(data){
                var path=$("#hidd").val();

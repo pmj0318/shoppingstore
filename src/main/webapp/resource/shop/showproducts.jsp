@@ -62,6 +62,7 @@
     <button class="action action--close"><i class="fa fa-remove"></i><span class="action__text action__text--invisible">Close comparison overlay</span>
     </button>
 </section>
+
 <div class="tcdPageCode"></div><%--就是分1页面的引入--%>
 
 <script src="<%=basePath%>resource/js/classie.js"></script>
@@ -69,14 +70,14 @@
 
 <script>
     $(function () {
-        var p=1;//定义一个条数,就是定义一个条数
+        var p=1;//day11定义一个条数,就是定义一个条数
 
-        $.ajax({
+        $.ajax({//day06
             url: "selectAllProductsByP_type",
             type: "post",
             data: {
                 "p_type": getQueryString("p_type"),
-                 "page":1
+                 "page":1//就是进来斯的页面就是此时默认第一个
             },
             success: function (data) {
 
@@ -118,7 +119,7 @@
                      "page":page
                  },
                  success:function (data) {
-                     $(".grid").html("");//就是清除，就是自己，不然会追加
+                     $(".grid").html("");//就是清除，就是自己，不然会追加,就是数据会追加
                      for (var i = 0; i < data.length; i++) {
                          var str = "<div class='product'>" +
                              "            <div class='product__info'>" +
@@ -127,8 +128,7 @@
                              "                <span class='product__region extra highlight'>" + data[i].intro + "</span>" +
                              "                <span class='product__price highlight'>" + data[i].price + "</span>" +
                              "                <button class='action action--button action--buy'pid='" + data[i].pId + "'><i class='fa fa-shopping-cart'></i><span class='action__text cd-add-to-cart' >加入购物车</span></button>" + '' +
-                             "                 <button class='action action--button action--buy'pid='" + data[i].pId + "'><i class='fa fa-shopping-cart'></i><span class='action__text cd-add-to-cart' >立即购买</span></button>" + '' +
-                             "                 <button class='action action--button action--buy'pid='" + data[i].pId + "'><i class='fa fa-shopping-cart'></i><span class='action__text cd-add-to-cart' >查看详情</span></button>" +
+                             "                 <button class='action action--button action--buy'pid='" + data[i].pId + "'><i class='fa fa-shopping-cart'></i><span class='action__text cd-add-to-cart' >立即购买</span></button>" +
                              "            </div>" +
                              "            <label class='action action--compare-add'><input class='check-hidden' type='checkbox' /><i class='fa fa-plus'></i><i class='fa fa-check'></i><span class='action__text action__text--invisible'>比较商品</span></label>'" +
                              "        </div>";
@@ -144,6 +144,12 @@
             }
         });
 
+       $(".grid").on("click",".product__image",function () {//day11就是自己的点击商品进行跳转
+           var pi=$(this).next().next().next().next().attr("pid");
+           //方法就是在这个calss后面,加一个pid,就是直接$(this).attr("pid")
+           alert(pi);
+           window.open("<%=basePath%>resource/shop/productdetail.jsp?pi="+pi)
+       })
 
         $(".grid").on("click", ".action ", function () {
             // alert($(this).attr("pid"));
@@ -220,12 +226,12 @@
 </script>
 
 
-<div class="search d1">
+<%--<div class="search d1">
     <form>
         <input type="text" placeholder="搜索从这里开始...">
         <button type="submit"></button>
     </form>
-</div>
+</div>--%>
 
 </body>
 </html>

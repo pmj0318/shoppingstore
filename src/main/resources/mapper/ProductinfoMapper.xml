@@ -24,18 +24,31 @@
     select distinct p_type from productinfo
   </select>
 
-    <!--就是页面给页面传参数-->
+    <!--day10就是页面给页面传参数,分页,当要对符号进行计算的时候,要转义一下-->
     <select id="selectAllProductsByP_type" resultMap="BaseResultMap">
-
+     <!-- select <include refid="Base_Column_List" /> from productinfo where p_type=#{p_type,jdbcType=VARCHAR}-->
       select * from(
       select t.*,rownum rn from (
       select * from productinfo where p_type=#{p_type,jdbcType=VARCHAR}) t where rownum&lt;=#{page,jdbcType=DECIMAL}*4)
       where rn>=(#{page,jdbcType=DECIMAL}-1)*4+1
+
     </select>
 
+<!--就是自己根据页面个数,算出页面-->
 <select id="selectTotallPage" resultType="java.lang.Integer">
     select count(*) from productinfo where p_type=#{p_type,jdbcType=VARCHAR}
 </select>
+
+  <!--day11查询商品上下架-->
+  <select id="selectUpAndDownProducts" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from productinfo where status='1' or STATUS='0' or STATUS='2' order by P_ID
+  </select>
+
+<!--day12 商品上下架根据type查询,出来所有产品-->
+  <select id="selectAllProductsByP_types" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from productinfo where p_type=#{p_type,jdbcType=VARCHAR}
+  </select>
+
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -48,6 +61,13 @@
     where P_ID = #{pId,jdbcType=DECIMAL}
   </delete>
   <insert id="insert" parameterType="entity.Productinfo" >
+
+    /*j就是插入自己序列号主键的序列号.uId是这个xml里面的实体类的,数据库里面的p_Id.  seq_user_info_id及时创建主键序列*/
+    <selectKey keyProperty="pId" order="BEFORE" resultType="int">
+      select seq_productinfo_p_id.nextval from dual
+    </selectKey>
+
+
     insert into PRODUCTINFO (P_ID, P_CODE, P_NAME, 
       P_TYPE, BRAND, PIC, 
       P_NUM, PRICE, SALE, 
@@ -58,6 +78,13 @@
       #{intro,jdbcType=VARCHAR}, #{status,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="entity.Productinfo" >
+
+    /*j就是插入自己序列号主键的序列号.uId是这个xml里面的实体类的,数据库里面的p_Id.  seq_user_info_id及时创建主键序列*/
+    <selectKey keyProperty="pId" order="BEFORE" resultType="int">
+      select seq_productinfo_p_id.nextval from dual
+    </selectKey>
+
+
     insert into PRODUCTINFO
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pId != null" >

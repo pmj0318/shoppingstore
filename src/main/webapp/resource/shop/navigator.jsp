@@ -299,7 +299,7 @@
 $(function(){
 /*一进页面就发请求查询所有的类别*/
    $.ajax({
-      url:"selectAllp_type",
+      url:"selectAllp_type",//可以拦截请求,就是一上来就是拦截
        type:"post",
        success:function(data){
 
@@ -320,7 +320,7 @@ $(function(){
        // alert($(this).children().children().children().text());//显示就是文本内容,嵌套.就是也能获取.会有包所以在网页上追加text(),会选择在前面children
        var type=$(this).children().children().children().text();
 
-       //就是自己的页面获取然后就是传值下一个页面,计算条数
+       //day11-就是自己的页面获取数据库然后,就是传值下一个页面,计算条数
        $.ajax({
            url:"selectTotallPage",
            type:"post",
@@ -328,13 +328,13 @@ $(function(){
                "p_type":type
            },
            success:function (data) {
-               //   $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&username="+getQueryString("username"));就是从上一个页面传值,到下一个页面接受
+               //day11总共页数,及时要传给下一个页面,获取
                $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&page="+data);//就是使用cokie
            }
        });
 
 //   $("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type+"&username="+getQueryString("username"));就是从上一个页面传值,到下一个页面接受
-       //$("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);//就是使用cokie
+       //$("#myframe").attr("src","<%=basePath%>resource/shop/showProducts.jsp?p_type="+type);//就是使用cokie//day11修改掉
 
        $(".intro").hide();
        $("#myframe").show();

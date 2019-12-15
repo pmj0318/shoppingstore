@@ -211,8 +211,8 @@
                         "                    <label for=\"checkbox_2\"  pid='"+data[i].pId+"' pnum='"+data[i].pNum+"'></label>\n" +
                         "                </li>\n" +
                         "                <li class=\"list_con\">\n" +
-                        "                    <div class=\"list_img\"><a href=\"javascript:;\"><img src='<%=basePath%>"+data[i].pic+"' alt=\"\"></a></div>\n" +
-                        "                    <div class=\"list_text\"><a href=\"javascript:;\">"+data[i].pName+"</a></div>\n" +
+                        "                    <div class=\"list_img\"><a href=\"<%=basePath%>resource/shop/productdetail.jsp?pi="+data[i].pId+"\" target=\"_blank\"><img src='<%=basePath%>"+data[i].pic+"' alt=\"\"></a></div>\n" +
+                        "                    <div class=\"list_text\"><a href=\"<%=basePath%>resource/shop/productdetail.jsp?pi="+data[i].pId+"\" target=\"_blank\">"+data[i].pName+"</a></div>\n" +
                         "                </li>" +
                         "                <li class=\"list_info\">" +
                         "                    <p>"+data[i].intro+"</p>" +
@@ -223,7 +223,7 @@
                         "                <li class=\"list_amount\">" +
                         "                    <div class=\"amount_box\">" +
                         "                        <a href='javascript:;' class='reduce reSty' pid='"+data[i].pId+"'>-</a>" +
-                        "                        <input type='text' value='"+data[i].pNum+"' class='sum'  onkeyup=\"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\\D/g,'')}\" onafterpaste=\"if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\\D/g,'')}\">" +
+                        "                        <input type='text' value='"+data[i].pNum+"' class='sum' >" +
                         "                        <a href='javascript:;' class='plus' pid='"+data[i].pId+"'>+</a>" +
                         "                    </div>" +
                         "                </li>" +
@@ -294,6 +294,10 @@
 
         });
 
+     //day11,就是点击事件点击图片就是跳转到详情页
+     /*   $(".cartBox").on("click",".",function(){
+
+        }*/
 
         $(".cartBox").on("click",".plus",function(){//数量是加数量
 //就是说今后商家不同,商品就不是拼在order_lists,而是就是拼在,cartMain_hd这个标签里面
@@ -356,7 +360,7 @@
 
 
         $(".cartBox").on("onkeyup",".sum",function() {
-
+ //功能带测试
                 $.ajax({
                     url: "handdata",
                     type: "post",

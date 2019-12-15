@@ -16,6 +16,16 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
 
     @Override
+    public List<Productinfo> selectAllProductsByP_types(String p_type) {//上下架根据type查询所有的产品
+        return pfm.selectAllProductsByP_types(p_type);
+    }
+
+    @Override
+    public List<Productinfo> selectUpAndDownProducts() {//查询商品上下架
+        return pfm.selectUpAndDownProducts();
+    }
+
+    @Override
     public int selectTotallPage(String p_type) {
         return pfm.selectTotallPage(p_type);
     }
